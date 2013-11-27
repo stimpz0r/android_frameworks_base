@@ -2519,6 +2519,12 @@ public final class Settings {
         public static final String BATTERY_LIGHT_FULL_COLOR = "battery_light_full_color";
 
         /**
+         * What color to use for the battery LED while charging - really full (100%)
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_REALLY_FULL_COLOR = "battery_light_really_full_color";
+
+        /**
          * Network speed indicator
          * @hide
          */
@@ -2582,6 +2588,80 @@ public final class Settings {
          * @hide
          */
         public static final String LOCKSCREEN_DISABLED = "lockscreen.disabled";
+
+        /**
+         * Whether to display notifications on screen when screen is off
+         * @hide
+         */
+        public static final String ENABLE_ACTIVE_DISPLAY = "enable_active_display";
+
+        /**
+         * Whether to display notification messages around ring
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_TEXT = "active_display_text";
+
+        /**
+         * Time to redisplay notifications on screen from when screen turns off, 0 = never redisplay
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_REDISPLAY = "active_display_redisplay";
+
+        /**
+         * Brightness of the display when displaying the active display view
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_BRIGHTNESS = "active_display_brightness";
+
+        /**
+         * Display active display view when device comes out of the user's pocket, etc...
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_POCKET_MODE = "active_display_pocket_mode";
+
+        /**
+         * Whether to include ongoing/non-clearable notifications
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_ALL_NOTIFICATIONS = "active_display_all_notifications";
+
+        /**
+         * Whether to hide low priority notifications like those from google now
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_HIDE_LOW_PRIORITY_NOTIFICATIONS =
+                "active_display_hide_low_priority_notifications";
+
+        /**
+         * Whether to display AM/PM after time when in 12h format
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_SHOW_AMPM = "active_display_show_ampm";
+
+        /**
+         * Whether to display the date above the time
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_SHOW_DATE = "active_display_show_date";
+
+        /**
+         * Whether to invert the colors when in bright light
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_SUNLIGHT_MODE = "active_display_sunlight_mode";
+
+        /**
+         * Timeout of the display when there is no user interaction
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_TIMEOUT = "active_display_timeout";
+
+        /**
+         * A list of packages to exclude from being displayed in active display.
+         * This should be a string of packages separated by |
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_EXCLUDED_APPS = "active_display_excluded_apps";
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#LOW_BATTERY_SOUND}
@@ -2725,6 +2805,12 @@ public final class Settings {
         public static final String CLEAR_RECENTS_BUTTON_LOCATION = "clear_recents_button_location";
 
         /**
+         * Show when WiFi or data mobile is sending/receiving data
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_ACTIVITY = "status_bar_network_activity";
+
+        /**
          * Whether or not to show circle battery around the lockscreen ring
          * @hide
          */
@@ -2841,6 +2927,25 @@ public final class Settings {
          * @hide
          */
         public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION = "key_app_switch_long_press_action";
+
+        /**
+         * Whether to use the custom quick unlock screen control
+         * @hide
+         */
+        public static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL = "lockscreen_quick_unlock_control";
+
+        /**
+         * Battery warning preferences
+         *
+         * 0 = show dialog + play sound (default)
+         * 1 = fire notification + play sound
+         * 2 = show dialog only
+         * 3 = fire notification only
+         * 4 = play sound only
+         * 5 = none
+         * @hide
+         */
+        public static final String POWER_UI_LOW_BATTERY_WARNING_POLICY = "power_ui_low_battery_warning_policy";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
