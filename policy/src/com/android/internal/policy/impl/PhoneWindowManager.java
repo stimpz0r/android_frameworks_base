@@ -3936,6 +3936,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 if (mStatusBarController.setBarShowingLw(true)) {
                     changes |= FINISH_LAYOUT_REDO_LAYOUT;
                 }
+                // Maintain fullscreen layout until incoming animation is complete.
+                topIsFullscreen = mTopIsFullscreen && mStatusBar.isAnimatingLw();
+                // Transient status bar on the lockscreen is not allowed
+                if (mForceStatusBarFromKeyguard && mStatusBarController.isTransientShowing()) {
+                    mStatusBarController.updateVisibilityLw(false /*transientAllowed*/,
+                            mLastSystemUiFlags, mLastSystemUiFlags);
+                }
             } else if (mTopFullscreenOpaqueWindowState != null) {
                 if (localLOGV) {
                     Slog.d(TAG, "frame: " + mTopFullscreenOpaqueWindowState.getFrameLw()
@@ -3969,7 +3976,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
         }
 
-        mTopIsFullscreen = topIsFullscreen;
+        if (mTopIsFullscreen != topIsFullscreen) {
+            if (!topIsFullscreen) {
+                // Force another layout when status bar becomes fully shown.
+                changes |= FINISH_LAYOUT_REDO_LAYOUT;
+            }
+            mTopIsFullscreen = topIsFullscreen;
+        }
 
         // Hide the key guard if a visible window explicitly specifies that it wants to be
         // displayed when the screen is locked.
@@ -5234,6 +5247,25 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
     ProgressDialog mBootMsgDialog = null;
 
+    /**
+     * name of package currently being dex optimized
+     * as shown through this.showBootMessage(msg, always);
+     */
+    static String currentPackageName;
+    public void setPackageName(String pkgName) {
+        if (pkgName == null) {
+            pkgName = "stop.looking.at.me.swan";
+        }
+        this.currentPackageName = pkgName;
+    }
+
+    // debugging 'Android is upgrading...' ProgressDialog
+    final boolean DEBUG_BOOTMSG = false;
+
+    // this method is called to create, if needed, and update boot ProgressDialog
+    // see @link frameworks/base/services/java/com/android/server/pm/
+    //              PackageManagerService.performBootDexOpt()
+
     /** {@inheritDoc} */
     public void showBootMessage(final CharSequence msg, final boolean always) {
         if (mHeadless) return;
@@ -5279,6 +5311,21 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.show();
                 }
                 mBootMsgDialog.setMessage(msg);
+                if (DEBUG_BOOTMSG) Log.d(TAG, "********** showBootMessage(" + msg +", " + always + ") updated ***********");
+                if (currentPackageName != null) {
+                    mBootMsgDialog.setTitle(msg);
+                    mBootMsgDialog.setMessage(currentPackageName);
+                    if (DEBUG_BOOTMSG) Log.d(TAG, "setTitle: " + msg + " setMessage: " + currentPackageName);
+                } else {
+                    if (DEBUG_BOOTMSG) Log.d(TAG, "failed; CURRENT_PACKAGE_NAME == null");
+                }
+                if (msg.equals(mContext.getResources().getString(R.string.android_upgrading_starting_apps))) {
+                    if (DEBUG_BOOTMSG) Log.d(TAG, "starting apps so we use normal layout");
+                    mBootMsgDialog.setTitle(R.string.android_upgrading_title);
+                    mBootMsgDialog.setMessage(mContext.getResources().getString(R.string.android_upgrading_starting_apps));
+                } else {
+                    if (DEBUG_BOOTMSG) Log.d(TAG, "not starting apps");
+                }
             }
         });
     }
@@ -5706,9 +5753,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 mNavigationBar != null &&
                 hideNavBarSysui && immersiveSticky;
 
-        boolean denyTransientStatus = mStatusBarController.isTransientShowing()
+        boolean denyTransientStatus = mStatusBarController.isTransientShowRequested()
                 && !transientStatusBarAllowed && hideStatusBarSysui;
-        boolean denyTransientNav = mNavigationBarController.isTransientShowing()
+        boolean denyTransientNav = mNavigationBarController.isTransientShowRequested()
                 && !transientNavBarAllowed;
         if (denyTransientStatus || denyTransientNav) {
             // clear the clearable flags instead

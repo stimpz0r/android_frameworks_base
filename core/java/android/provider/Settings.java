@@ -1025,6 +1025,7 @@ public final class Settings {
             MOVED_TO_SECURE.add(Secure.LOCK_PATTERN_ENABLED);
             MOVED_TO_SECURE.add(Secure.LOCK_PATTERN_VISIBLE);
             MOVED_TO_SECURE.add(Secure.LOCK_PATTERN_TACTILE_FEEDBACK_ENABLED);
+            MOVED_TO_SECURE.add(Secure.LOCK_NUMPAD_RANDOM);
             MOVED_TO_SECURE.add(Secure.LOGGING_ID);
             MOVED_TO_SECURE.add(Secure.PARENTAL_CONTROL_ENABLED);
             MOVED_TO_SECURE.add(Secure.PARENTAL_CONTROL_LAST_UPDATE);
@@ -1976,6 +1977,12 @@ public final class Settings {
         public static final String VIBRATE_INPUT_DEVICES = "vibrate_input_devices";
 
         /**
+         * Empty volume.
+         * @hide
+         */
+        public static final String VOLUME_DEFAULT = "volume_default";
+
+        /**
          * Ringer volume. This is used internally, changing this value will not
          * change the volume. See AudioManager.
          */
@@ -2530,6 +2537,18 @@ public final class Settings {
          */
         public static final String STATUS_BAR_TRAFFIC = "status_bar_traffic";
 
+        /**
+         * Show Screenshot in Power Menu
+         * @hide
+         */
+        public static final String SCREENSHOT_IN_POWER_MENU = "screenshot_in_power_menu";
+
+        /**
+         * Show ScreenRecord in Power Menu
+         * @hide
+         */
+        public static final String SCREENRECORD_IN_POWER_MENU = "screenrecord_in_power_menu";
+
         /** Sprint MWI Quirk: Show message wait indicator notifications
          * @hide
          */
@@ -2542,6 +2561,14 @@ public final class Settings {
          * @hide
          */
         public static final String POINTER_LOCATION = "pointer_location";
+
+        /**
+         * Show icon when stylus is used?
+         * 0 = no
+         * 1 = yes
+         * @hide
+         */
+        public static final String STYLUS_ICON_ENABLED = "stylus_icon_enabled";
 
         /**
          * Show touch positions on screen?
@@ -2649,6 +2676,18 @@ public final class Settings {
          * @hide
          */
         public static final String ACTIVE_DISPLAY_SUNLIGHT_MODE = "active_display_sunlight_mode";
+
+        /**
+         * Whether to turn off the device when gets pocketed again and was waked up by active display
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_TURNOFF_MODE = "active_display_turnoff_mode";
+
+        /**
+         * Threshold of the proximity sensor to turn on the device.
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_THRESHOLD = "active_display_threshold";
 
         /**
          * Timeout of the display when there is no user interaction
@@ -2946,6 +2985,39 @@ public final class Settings {
          * @hide
          */
         public static final String POWER_UI_LOW_BATTERY_WARNING_POLICY = "power_ui_low_battery_warning_policy";
+
+        /**
+         * Whether to use the custom status bar header or not
+         * @hide
+         */
+        public static final String STATUS_BAR_CUSTOM_HEADER = "status_bar_custom_header";
+
+        /**
+         * Volume key controls ringtone or media sound stream
+         *
+         * @hide
+         */
+        public static final String VOLUME_KEYS_DEFAULT = "volume_keys_default";
+
+        /**
+         * Should the non-intrsive incall ui be used
+         *
+         * @hide
+         */
+        public static final String NON_INTRUSIVE_INCALL = "non_intrusive_incall";
+
+        /**
+
+         * Setting to show the battery percentage text
+         * @hide
+         */
+        public static final String STATUS_BAR_BATTERY_STYLE = "status_bar_battery_style";
+
+        /**
+         * Whether to unlock the menu key.  The value is boolean (1 or 0).
+         * @hide
+         */
+        public static final String MENU_UNLOCK_SCREEN = "menu_unlock_screen";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -3246,6 +3318,7 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_WATCHDOG_PING_TIMEOUT_MS =
             Secure.WIFI_WATCHDOG_PING_TIMEOUT_MS;
+
     }
 
     /**
@@ -3783,6 +3856,12 @@ public final class Settings {
         public static final String ADB_PORT = "adb_port";
 
         /**
+         * Whether to display the ADB notification.
+         * @hide
+         */
+        public static final String ADB_NOTIFY = "adb_notify";
+
+        /**
          * Setting to allow mock locations and location provider status to be injected into the
          * LocationManager service for testing purposes during application development.  These
          * locations and status values  override actual location and status information generated
@@ -3940,6 +4019,15 @@ public final class Settings {
          * Whether lock pattern is visible as user enters (0 = false, 1 = true)
          */
         public static final String LOCK_PATTERN_VISIBLE = "lock_pattern_visible_pattern";
+
+        /**
+         * Whether the NumKeyPad will change the orders of numbers
+         * in a PIN locked lockscreen
+         * 0 = off | 1 = always | 2 = only on request
+         * @hide
+          */
+
+        public static final String LOCK_NUMPAD_RANDOM = "lock_numpad_random";
 
         /**
          * Whether lock pattern will vibrate as user enters (0 = false, 1 =
@@ -4942,6 +5030,12 @@ public final class Settings {
         public static final String ADVANCED_REBOOT = "advanced_reboot";
 
         /**
+         * Whether developer settings dare enabled.
+         * @hide
+         */
+        public static final String DEVELOPER_OPTIONS_ENABLED = "developer_options_enabled";
+
+        /**
          * This are the settings to be backed up.
          *
          * NOTE: Settings are backed up and restored in the order they appear
@@ -5321,12 +5415,19 @@ public final class Settings {
          */
         public static final String STAY_ON_WHILE_PLUGGED_IN = "stay_on_while_plugged_in";
 
-        /**
+       /**
          * When the user has enable the option to have a "bug report" command
          * in the power menu.
          * @hide
          */
         public static final String BUGREPORT_IN_POWER_MENU = "bugreport_in_power_menu";
+
+        /**
+         * Whether to wake the display when plugging or unplugging the charger
+         *
+         * @hide
+         */
+        public static final String WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
 
         /**
          * Whether ADB is enabled.
@@ -6483,12 +6584,6 @@ public final class Settings {
         public static final String LOW_BATTERY_SOUND_TIMEOUT = "low_battery_sound_timeout";
 
         /**
-         * Whether to include options in power menu for rebooting into recovery or bootloader
-         * @hide
-         */
-        public static final String ADVANCED_REBOOT = "advanced_reboot";
-
-        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -6507,6 +6602,7 @@ public final class Settings {
         public static final String[] SETTINGS_TO_BACKUP = {
             BUGREPORT_IN_POWER_MENU,
             STAY_ON_WHILE_PLUGGED_IN,
+            WAKE_WHEN_PLUGGED_OR_UNPLUGGED,
             AUTO_TIME,
             AUTO_TIME_ZONE,
             POWER_SOUNDS_ENABLED,
@@ -6519,8 +6615,7 @@ public final class Settings {
             WIFI_NUM_OPEN_NETWORKS_KEPT,
             EMERGENCY_TONE,
             CALL_AUTO_RETRY,
-            DOCK_AUDIO_MEDIA_ENABLED,
-            ADVANCED_REBOOT
+            DOCK_AUDIO_MEDIA_ENABLED
         };
 
         // Populated lazily, guarded by class object:

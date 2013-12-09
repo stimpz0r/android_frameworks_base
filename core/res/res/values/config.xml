@@ -352,6 +352,9 @@
     <!-- Wifi driver supports batched scan -->
     <bool translatable="false" name="config_wifi_batched_scan_supported">false</bool>
 
+    <!-- Boolean indicating whether the start command should be called on the wireless interface  when starting the SoftAp -->
+    <bool name="config_wifiApStartInterface">false</bool>
+
     <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
          Software implementation will be used if config_hardware_auto_brightness_available is not set -->
     <bool name="config_automatic_brightness_available">false</bool>
@@ -594,8 +597,8 @@
     <!-- Disable lockscreen rotation by default -->
     <bool name="config_enableLockScreenRotation">false</bool>
 
-    <!-- Disable lockscreen translucent decor by default -->
-    <bool name="config_enableLockScreenTranslucentDecor">false</bool>
+    <!-- Enable lockscreen translucent decor by default -->
+    <bool name="config_enableLockScreenTranslucentDecor">true</bool>
 
     <!-- Enable translucent decor by default -->
     <bool name="config_enableTranslucentDecor">true</bool>
@@ -1187,6 +1190,22 @@
          provisioning on some carriers, working around a bug (7305641)
          where if the preferred is used we don't try the others. -->
     <bool name="config_dontPreferApn">false</bool>
+
+    <!-- The list of ril radio technologies (see ServiceState.java) which only support
+         a single data connection at one time.  This may change by carrier via
+         overlays (some don't support multiple pdp on UMTS).  All unlisted radio
+         tech types support unlimited types (practically only 2-4 used). -->
+    <integer-array name="config_onlySingleDcAllowed">
+        <item>4</item>  <!-- IS95A -->
+        <item>5</item>  <!-- IS95B -->
+        <item>6</item>  <!-- 1xRTT -->
+        <item>7</item>  <!-- EVDO_0 -->
+        <item>8</item>  <!-- EVDO_A -->
+        <item>12</item> <!-- EVDO_B -->
+    </integer-array>
+
+    <!-- Set to true if after a provisioning apn the radio should be restarted -->
+    <bool name="config_restartRadioAfterProvisioning">false</bool>
 
     <!-- Vibrator pattern to be used as the default for notifications
          that specify DEFAULT_VIBRATE.
